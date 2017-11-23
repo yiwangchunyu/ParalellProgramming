@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1510770257 source:/home/cssei-c/ParallelProgramming/project4/test/testPthread.c
+	<stdio.h>
+	<stdlib.h>
+	<pthread.h>
+	<sys/time.h>
+
