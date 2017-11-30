@@ -1,0 +1,57 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <omp.h>   
+
+double f(int x)
+{
+	return 1.0*x;
+}
+void push(int thread_num,int i, int a[][100])
+{
+	int *p=a[thread_num];
+	int k;
+	for(k=0;k<100&&(*p)!=-1;k++,p++);
+		*p=i;
+}
+
+
+/*--------------------------------------------------------------------*/
+int main(int argc, char* argv[]) {
+	double sum=0;
+	int i,k;
+	int n=100;  //the number of the iteration times
+	int a[100][100]={{-1}};
+	for(i=0;i<100;i++)
+		for(k=0;k<100;k++)
+			a[i][k]=-1;
+   //int thread_count;
+   int thread_count = strtol(argv[1], NULL, 10); 
+	//thread_count = omp_get_num_threads();
+#  pragma omp parallel for num_threads(thread_count) \
+	reduction(+:sum) schedule(runtime) 
+//#  pragma omp parallel 
+   for(i=0;i<n;i++)
+	{
+		sum+=f(i);
+		
+		push(omp_get_thread_num(),i,a);
+		
+	}
+
+	for(i=0;i<thread_count;i++)
+	{
+		int j=0;
+		printf("thread %d :", i);
+		for(j=0;j<100;j++)
+		{
+			if(a[i][j]==-1) break;
+			printf(" %4d",a[i][j]);
+		}
+		printf("\n");
+	}
+
+   return 0; 
+}  /* main */
+
+
