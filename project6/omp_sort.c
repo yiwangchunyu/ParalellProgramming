@@ -4,7 +4,7 @@
 #include<omp.h>
 #include<time.h>
 #include<sys/time.h>
-
+#define MAX 100000
 int thread_count;
 void Count_sort(int a[], int n)
 {
@@ -33,16 +33,18 @@ void Count_sort(int a[], int n)
 int main(int argc, char *argv[])
 {
 	thread_count = strtol(argv[1],NULL,10);
-	int a[10] = {1,4,2,3,5,8,9,6,7,10};
+	int a[MAX];
+	int i;
+	for(i=0;i<MAX;i++)
+		a[i]=rand()%100;
 	struct timeval start;
 	struct timeval end;
 	gettimeofday(&start,NULL);
-	Count_sort(a,10);
-	gettimeofday(&start,NULL);
+	Count_sort(a,MAX);
+	gettimeofday(&end,NULL);
 	printf("time: %ld us\n", 1000000*(end.tv_sec-start.tv_sec)+end.tv_usec-start.tv_usec);
-	int i;
-	for(i=0;i<10;i++)
-		printf("%d ",a[i]);
+	//for(i=0;i<MAX;i++)
+		//printf("%d ",a[i]);
 	putchar(10);
 	return 0;
 }
